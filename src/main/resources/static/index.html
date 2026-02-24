@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>LINKFORGE 🔗</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+* {
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at 20% 20%, #667eea, #764ba2, #0f172a);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.main-title {
+  position: relative;
+  z-index: 1;
+  font-size: 48px;
+  font-weight: 800;
+  letter-spacing: 6px;
+  margin-bottom: 25px;
+  background: linear-gradient(90deg, #00f5ff, #ff7a18);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 25px rgba(0,255,255,0.35);
+}
+
+
+.container {
+  position: relative;
+  z-index: 1;
+  width: 92%;
+  max-width: 720px;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(18px);
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow:
+    0 25px 60px rgba(0,0,0,0.35),
+    inset 0 0 25px rgba(255,255,255,0.05);
+}
+
+.input-group {
+  margin-bottom: 18px;
+}
+
+.input-group label {
+  font-size: 13px;
+  opacity: 0.85;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 30px;
+  border: 1px solid rgba(255,255,255,0.15);
+  outline: none;
+  font-size: 15px;
+  background: rgba(255,255,255,0.08);
+  color: white;
+}
+
+.input-group input::placeholder {
+  color: rgba(255,255,255,0.6);
+}
+
+
+button {
+  width: 100%;
+  padding: 14px;
+  border-radius: 30px;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  background: linear-gradient(135deg, #ff7a18, #ffb347);
+  color: white;
+  transition: 0.25s;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 25px rgba(255,122,24,0.6);
+}
+
+
+.result-box {
+  margin-top: 25px;
+  background: rgba(0,0,0,0.35);
+  padding: 20px;
+  border-radius: 16px;
+  display: none;
+  text-align: center;
+  border: 1px solid rgba(0,255,255,0.25);
+}
+
+.result-link {
+  word-break: break-all;
+  font-weight: bold;
+  margin-top: 8px;
+  color: #00f5ff;
+}
+
+
+.copy-btn {
+  margin-top: 12px;
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+}
+
+
+.qr-box {
+  margin-top: 18px;
+}
+
+
+.analytics-box {
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.08);
+  display: none;
+}
+
+
+.footer {
+  margin-top: 18px;
+  font-size: 12px;
+  opacity: 0.75;
+  text-align: center;
+
+}
+
+#particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+</style>
+</head>
+
+<body>
+<canvas id="particles"></canvas>
+<div class="main-title">LINKFORGE</div>
+
+<div class="container">
+
+  <div class="input-group">
+    <label>Paste your long, messy link</label>
+    <input id="longUrl" placeholder="https://example.com/very/long/link" />
+  </div>
+
+  <div class="input-group">
+    <label>Customize your magic (optional)</label>
+    <input id="customAlias" placeholder="my-awesome-link" />
+  </div>
+
+  <div class="input-group">
+    <label>Auto-expire after (minutes)</label>
+    <input id="expiryMinutes" type="number" placeholder="Leave blank for forever ♾️" />
+  </div>
+
+  <button onclick="forgeLink()"> Forge My Link</button>
+
+
+  <div class="result-box" id="resultBox">
+    <div>✨ Your shiny new link ✨</div>
+    <div class="result-link" id="shortUrl"></div>
+    <button class="copy-btn" onclick="copyLink()">Grab the Link !!</button>
+
+    <div class="qr-box" id="qrBox"></div>
+  </div>
+
+
+  <div class="analytics-box" id="analyticsBox">
+    <h3>Link Insights</h3>
+    <p><b>Clicks:</b> <span id="clickCount">0</span></p>
+    <p><b>Status:</b> <span id="statusText">Active</span></p>
+  </div>
+
+  <div class="footer">
+    Built with ❤️ • LinkForge
+  </div>
+
+</div>
+
+<script>
+async function forgeLink() {
+  let longUrl = document.getElementById("longUrl").value.trim();
+
+  if (!longUrl) {
+    alert("Please enter a URL");
+    return;
+  }
+
+  if (!longUrl.startsWith("http://") && !longUrl.startsWith("https://")) {
+    longUrl = "https://" + longUrl;
+  }
+
+  const customAlias = document.getElementById("customAlias").value;
+  const expiryMinutes = document.getElementById("expiryMinutes").value;
+
+  const payload = { longUrl };
+  if (customAlias) payload.customAlias = customAlias;
+  if (expiryMinutes) payload.expiryMinutes = Number(expiryMinutes);
+
+  try {
+    const res = await fetch("/api/shorten", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    if (!res.ok) throw new Error("API error");
+
+    const data = await res.json();
+
+    document.getElementById("shortUrl").innerText = data.shortUrl;
+    document.getElementById("resultBox").style.display = "block";
+
+  
+    if (data.qrCodeBase64) {
+      document.getElementById("qrBox").innerHTML =
+        `<img src="data:image/png;base64,${data.qrCodeBase64}" width="160"/>`;
+    }
+
+ 
+    const code = data.shortUrl.split("/").pop();
+    const analyticsRes = await fetch(`/api/analytics/${code}`);
+    const a = await analyticsRes.json();
+
+    document.getElementById("analyticsBox").style.display = "block";
+    document.getElementById("clickCount").textContent = a.clickCount;
+    document.getElementById("statusText").textContent =
+      a.isActive ? "Active" : "Inactive ";
+
+  } catch (e) {
+    alert("Something went wrong!");
+    console.error(e);
+  }
+}
+
+function copyLink() {
+  const text = document.getElementById("shortUrl").innerText;
+
+  navigator.clipboard.writeText(text)
+    .then(() => alert("Copied to clipboard!"))
+    .catch(() => alert("Copy failed"));
+}
+
+const canvas = document.getElementById("particles");
+const ctx = canvas.getContext("2d");
+
+let particlesArray = [];
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
+let mouse = {
+  x: null,
+  y: null,
+  radius: 120
+};
+
+window.addEventListener("mousemove", function (event) {
+  mouse.x = event.x;
+  mouse.y = event.y;
+});
+
+class Particle {
+  constructor() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = Math.random() * 2.5 + 1.2;
+    this.speedX = (Math.random() - 0.5) * 0.4;
+    this.speedY = (Math.random() - 0.5) * 0.4;
+  }
+update() {
+  this.x += this.speedX;
+  this.y += this.speedY;
+
+  if (mouse.x && mouse.y) {
+    let dx = mouse.x - this.x;
+    let dy = mouse.y - this.y;
+    let distance = Math.sqrt(dx * dx + dy * dy);
+
+    if (distance < mouse.radius) {
+      this.x += dx * 0.002;
+      this.y += dy * 0.002;
+    }
+  }
+
+  if (this.x > canvas.width) this.x = 0;
+  if (this.x < 0) this.x = canvas.width;
+  if (this.y > canvas.height) this.y = 0;
+  if (this.y < 0) this.y = canvas.height;
+}
+
+  draw() {
+   ctx.fillStyle = "rgba(0, 245, 255, 0.8)";
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+function initParticles() {
+  particlesArray = [];
+  const count = Math.floor(window.innerWidth / 12);
+
+  for (let i = 0; i < count; i++) {
+    particlesArray.push(new Particle());
+  }
+}
+
+initParticles();
+
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  for (let p of particlesArray) {
+    p.update();
+    p.draw();
+  }
+
+  requestAnimationFrame(animateParticles);
+}
+
+animateParticles();
+</script>
+
+</body>
+</html>
