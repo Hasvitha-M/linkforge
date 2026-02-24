@@ -2,7 +2,6 @@
 
 LinkForge is a production-ready URL shortening service built with Spring Boot that transforms long URLs into compact, shareable links with real-time analytics and QR generation.
 
----
 
 ## Features
 
@@ -14,7 +13,7 @@ LinkForge is a production-ready URL shortening service built with Spring Boot th
 - QR code generation  
 - Modern UI  
 
----
+
 
 ## Tech Stack
 
@@ -34,7 +33,7 @@ LinkForge is a production-ready URL shortening service built with Spring Boot th
 - ZXing (QR Code generation)  
 - Lombok  
 
----
+
 
 ## Tools Used
 
@@ -45,7 +44,7 @@ LinkForge is a production-ready URL shortening service built with Spring Boot th
 - MySQL Workbench  
 - Maven Wrapper
 
----
+
 
 ## Project Structure
 src/main/java/com/example/demo
@@ -57,17 +56,16 @@ src/main/java/com/example/demo
 └── util
 
 
----
 
 ## Setup Instructions
 
-### 1️⃣ Clone the repository
+### 1️⃣ **Clone the repository**
 
 ```bash
 git clone https://github.com/YOUR_USERNAME/linkforge.git
 cd linkforge
 
-### 2️⃣ Configure MySQL
+### 2️⃣ **Configure MySQL**
 
 Update in application.properties:
 
@@ -75,7 +73,7 @@ spring.datasource.url=jdbc:mysql://localhost:3306/linkforge
 spring.datasource.username=YOUR_USERNAME
 spring.datasource.password=YOUR_PASSWORD
 
-### 3️⃣ Run the application
+### 3️⃣ **Run the application**
 mvn spring-boot:run
 
 App will start at:
@@ -92,7 +90,6 @@ App will start at:
 
 Paste a long URL → Forge → Get short link + QR + analytics.
 
----
 
 ## Application Preview
 
@@ -105,4 +102,3 @@ Paste a long URL → Forge → Get short link + QR + analytics.
 ### Analytics & QR View
 ![Analytics UI](docs/images/ui-analytics.png)
 
----
