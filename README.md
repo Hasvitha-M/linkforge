@@ -62,61 +62,22 @@ src/main/java/com/example/demo
 
 ```bash 
 git clone https://github.com/YOUR_USERNAME/linkforge.git
-cd linkforge ```
+cd linkforge
+```
 
-2️⃣ Configure MySQL
+### 2️⃣ Configure MySQL
 
 Update in application.properties:
 spring.datasource.url=jdbc:mysql://localhost:3306/linkforge
 spring.datasource.username=YOUR_USERNAME
 spring.datasource.password=YOUR_PASSWORD
 
-3️⃣ Run the application
+### 3️⃣ Run the application
+ ```bash
 mvn spring-boot:run
-
+```
 App will start at:
     http://localhost:9090
-
-API Endpoints 
-🔹 Shorten URL: POST /api/shorten
-🔹 Redirect: GET /{shortCode}
-🔹 Analytics: GET /api/analytics/{code}
-🔹 QR Code: GET /api/qr/{code}
-
-
-Demo
-
-Paste a long URL → Forge → Get short link + QR + analytics.
-
-
-## Application Preview
-
-### Home Interface
-![Home UI](docs/images/ui-home.png)
-
-### Shortened Link Result
-![Result UI](docs/images/ui-result.png)
-
-### Analytics & QR View
-![Analytics UI](docs/images/ui-analytics.png)
-
-
-
-
-### 2️⃣ **Configure MySQL**
-
-Update in application.properties:
-
-spring.datasource.url=jdbc:mysql://localhost:3306/linkforge
-spring.datasource.username=YOUR_USERNAME
-spring.datasource.password=YOUR_PASSWORD
-
-### 3️⃣ **Run the application**
-mvn spring-boot:run
-
-App will start at:
-    http://localhost:9090
-
 
 ## API Endpoints 
 🔹 Shorten URL: POST /api/shorten
@@ -124,8 +85,8 @@ App will start at:
 🔹 Analytics: GET /api/analytics/{code}
 🔹 QR Code: GET /api/qr/{code}
 
-## Demo
 
+## Demo
 Paste a long URL → Forge → Get short link + QR + analytics.
 
 
@@ -139,7 +100,4 @@ Paste a long URL → Forge → Get short link + QR + analytics.
 
 ### Analytics & QR View
 ![Analytics UI](docs/images/ui-analytics.png)
-
-
-
 
