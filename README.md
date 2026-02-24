@@ -55,7 +55,7 @@ src/main/java/com/example/demo
 ### 1️⃣ Clone the repository
 
 ```bash 
-git clone https://github.com/YOUR_USERNAME/linkforge.git
+git clone https://github.com/Hasvitha-M/linkforge.git
 cd linkforge
 ```
 
@@ -74,7 +74,7 @@ mvn spring-boot:run
 ```
 App will start at:
 ```bash
-    http://localhost:9090
+http://localhost:9090
 ```
 
 ## API Endpoints 
@@ -87,7 +87,9 @@ App will start at:
 
 
 ## Demo
+
 Paste a long URL → Forge → Get short link + QR + analytics.
+
 
 
 ## Application Preview
@@ -100,5 +102,6 @@ Paste a long URL → Forge → Get short link + QR + analytics.
 
 ### Analytics & QR View
 ![Analytics UI](docs/images/ui-analytics.png)
+
 
 
